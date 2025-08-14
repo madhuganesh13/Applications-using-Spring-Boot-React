@@ -1,0 +1,41 @@
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.form, .filter {
+  background: #f9f9f9;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+.form input, .form textarea, .filter input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.form button {
+  margin-right: 8px;
+  padding: 8px 12px;
+}
+
+.list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.list th, .list td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.list th {
+  background: #f1f1f1;
+}
