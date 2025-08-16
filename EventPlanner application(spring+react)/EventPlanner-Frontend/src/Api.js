@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Use your Railway backend URL here
-const API_BASE = "https://eventplanner-backend-production-9fb3.up.railway.app/api/events";
+//const API_BASE = "https://eventplanner-backend-production-9fb3.up.railway.app/api/events";
 
 const API = axios.create({
   baseURL: "https://eventplanner-backend-production-9fb3.up.railway.app/api/events",
@@ -15,4 +15,5 @@ export const updateEvent = (id, data) => API.put(`/events/${id}`, data);
 export const deleteEvent = (id) => API.delete(`/events/${id}`);
 
 export default API;
+
 
