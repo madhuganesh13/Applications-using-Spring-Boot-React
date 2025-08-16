@@ -6,7 +6,6 @@ import axios from "axios";
 const API = axios.create({
   baseURL: "https://eventplanner-backend-production-9fb3.up.railway.app/api/events",
 });
-
 // Event APIs
 export const getEvents = (params) => API.get("/events", { params });
 export const getEvent = (id) => API.get(`/events/${id}`);
@@ -15,5 +14,6 @@ export const updateEvent = (id, data) => API.put(`/events/${id}`, data);
 export const deleteEvent = (id) => API.delete(`/events/${id}`);
 
 export default API;
+
 
 
