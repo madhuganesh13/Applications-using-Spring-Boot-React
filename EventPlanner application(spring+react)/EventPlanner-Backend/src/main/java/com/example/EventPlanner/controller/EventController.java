@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
-@CrossOrigin(origins = {"http://localhost:3000", "https://applications-using-spring-boot-react-9bu9s8ayo.vercel.app"}) // allow React dev server
+@CrossOrigin(origins = {"http://localhost:3000", "https://applications-using-spring-boot-react-qo4yg2jcv.vercel.app"}) // allow React dev server
 public class EventController {
 
     private final EventRepository repository;
@@ -74,4 +74,5 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 }
+
 
