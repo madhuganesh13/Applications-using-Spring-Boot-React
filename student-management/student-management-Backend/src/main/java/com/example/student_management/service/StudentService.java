@@ -1,75 +1,62 @@
-package com.example.studentmgmt.service;
+package com.example.student_management.service;
 
-import com.example.studentmgmt.dto.CreateStudentRequest;
-import com.example.studentmgmt.dto.UpdateStudentRequest;
-import com.example.studentmgmt.entity.Student;
-import com.example.studentmgmt.exception.NotFoundException;
-import com.example.studentmgmt.repository.StudentRepository;
+import com.example.student_management.dto.CreateStudentRequest;
+import com.example.student_management.dto.UpdateStudentRequest;
+import com.example.student_management.entity.Student;
+import com.example.student_management.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class StudentService {
 
-  private final StudentRepository repo;
+    private final StudentRepository repo;
 
-  public Page<Student> list(String q, int page, int size, String sortBy, String direction) {
-    Sort sort = Sort.by("id");
-    if (sortBy != null && !sortBy.isBlank()) {
-      sort = Sort.by(sortBy);
+    public Page<Student> list(String q, int page, int size, String sortBy, String direction) {
+        Sort sort = direction.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() :
+                Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (q != null && !q.isEmpty()) {
+            // For now: just filter by name (you can extend)
+            return repo.findAll(pageable)
+                    .map(s -> s.getName().toLowerCase().contains(q.toLowerCase()) ? s : null)
+                    .map(s -> s); // no filtering in DB for simplicity
+        }
+
+        return repo.findAll(pageable);
     }
-    sort = "desc".equalsIgnoreCase(direction) ? sort.descending() : sort.ascending();
-    Pageable pageable = PageRequest.of(page, size, sort);
-    Specification<Student> spec = StudentSpecifications.search(q);
-    return repo.findAll(spec, pageable);
-  }
 
-  public Student get(Long id) {
-    return repo.findById(id).orElseThrow(() -> new NotFoundException("Student not found: " + id));
-  }
-
-  public Student create(CreateStudentRequest req) {
-    if (repo.existsByEmail(req.email())) {
-      throw new IllegalArgumentException("Email already exists");
+    public Student get(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
     }
-    Student s = Student.builder()
-        .firstName(req.firstName())
-        .lastName(req.lastName())
-        .email(req.email())
-        .dateOfBirth(req.dateOfBirth())
-        .gender(req.gender())
-        .department(req.department())
-        .gpa(req.gpa())
-        .build();
-    try {
-      return repo.save(s);
-    } catch (DataIntegrityViolationException e) {
-      throw new IllegalArgumentException("Invalid data");
-    }
-  }
 
-  public Student update(Long id, UpdateStudentRequest req) {
-    Student s = get(id);
-    s.setFirstName(req.firstName());
-    s.setLastName(req.lastName());
-    s.setEmail(req.email());
-    s.setDateOfBirth(req.dateOfBirth());
-    s.setGender(req.gender());
-    s.setDepartment(req.department());
-    s.setGpa(req.gpa());
-    try {
-      return repo.save(s);
-    } catch (DataIntegrityViolationException e) {
-      throw new IllegalArgumentException("Invalid data or duplicate email");
+    public Student create(CreateStudentRequest req) {
+        Student student = Student.builder()
+                .name(req.getName())
+                .email(req.getEmail())
+                .age(req.getAge())
+                .build();
+        return repo.save(student);
     }
-  }
 
-  public void delete(Long id) {
-    Student s = get(id);
-    repo.delete(s);
-  }
+    public Student update(Long id, UpdateStudentRequest req) {
+        Student student = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+
+        student.setName(req.getName());
+        student.setEmail(req.getEmail());
+        student.setAge(req.getAge());
+
+        return repo.save(student);
+    }
+
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
 }
