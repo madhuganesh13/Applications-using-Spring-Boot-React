@@ -48,10 +48,8 @@ public class StudentController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
-    @DeleteMapping("/reset")
-public void reset() {
-    service.reset();
-}
+
 
 }
+
 
