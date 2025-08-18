@@ -70,6 +70,8 @@ public class StudentService {
 
   public void delete(Long id) {
     Student s = get(id);
+    entityManager.createNativeQuery("ALTER TABLE student ALTER COLUMN id RESTART WITH 1").executeUpdate();
     repo.delete(s);
   }
 }
+
