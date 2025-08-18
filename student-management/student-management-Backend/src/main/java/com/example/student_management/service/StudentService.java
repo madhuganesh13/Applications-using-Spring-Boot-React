@@ -73,5 +73,11 @@ public class StudentService {
     entityManager.createNativeQuery("ALTER TABLE student ALTER COLUMN id RESTART WITH 1").executeUpdate();
     repo.delete(s);
   }
+    @Transactional
+  public void reset() {
+    repo.deleteAll();
+    entityManager.createNativeQuery("ALTER TABLE student ALTER COLUMN id RESTART WITH 1").executeUpdate();
+  }
 }
+
 
