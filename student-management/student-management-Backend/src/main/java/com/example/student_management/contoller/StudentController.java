@@ -48,8 +48,13 @@ public class StudentController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
-
+  @Transactional
+  public void reset() {
+    repo.deleteAll();
+    entityManager.createNativeQuery("ALTER TABLE student ALTER COLUMN id RESTART WITH 1").executeUpdate();
+  }
 
 }
+
 
 
