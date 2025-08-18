@@ -1,16 +1,16 @@
 package com.example.student_management.service;
 
-
-
 import com.example.student_management.dto.CreateStudentRequest;
 import com.example.student_management.dto.UpdateStudentRequest;
 import com.example.student_management.entity.Student;
 import com.example.student_management.exception.NotFoundException;
 import com.example.student_management.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class StudentService {
 
     private final StudentRepository repo;
+    private final JdbcTemplate jdbcTemplate;
 
     public Page<Student> list(String q, int page, int size, String sortBy, String direction) {
         Sort sort = Sort.by("id");
@@ -69,17 +70,16 @@ public class StudentService {
             throw new IllegalArgumentException("Invalid data or duplicate email");
         }
     }
-   
 
     public void delete(Long id) {
         Student s = get(id);
         repo.delete(s);
     }
-      @Transactional
+
+    @Transactional
     public void reset() {
-        repository.deleteAll();
+        repo.deleteAll();
         // Reset H2 identity column for "students" table
         jdbcTemplate.execute("ALTER TABLE students ALTER COLUMN id RESTART WITH 1");
     }
 }
-
