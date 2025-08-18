@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/students")
 @RequiredArgsConstructor
-    @CrossOrigin(origins = "https://applications-using-spring-boot-react-pvwf-q5uo2o432.vercel.app"
+    @CrossOrigin(origins = "https://applications-using-spring-boot-react-pvwf-q5uo2o432.vercel.app")
 public class StudentController {
 
     private final StudentService service;
@@ -56,6 +56,7 @@ public void reset() {
 
 
 }
+
 
 
 
