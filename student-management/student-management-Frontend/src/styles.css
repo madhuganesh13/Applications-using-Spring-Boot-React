@@ -1,0 +1,3 @@
+html, body, #root { height: 100%; margin: 0; }
+.container { padding: 16px; }
+.table-toolbar { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
