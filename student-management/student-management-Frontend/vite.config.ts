@@ -6,7 +6,7 @@ plugins: [react()],
 server: {
 port: 5173,
 proxy: {
-'/api': 'https://applications-using-spring-boot-react-production-d724.up.railway.app'
+'/api': 'https://applications-using-spring-boot-react-production-d724.up.railway.app/api'
 }
 },
 build: {
