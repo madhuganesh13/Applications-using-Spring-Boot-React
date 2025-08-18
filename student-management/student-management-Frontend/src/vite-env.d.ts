@@ -1,2 +1,2 @@
 /// <reference types="vite/client" />
-VITE_API_BASE_URL=https://your-backend.up.railway.app
+VITE_API_BASE_URL=https://applications-using-spring-boot-react-production-821d.up.railway.app
