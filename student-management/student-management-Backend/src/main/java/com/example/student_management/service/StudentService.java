@@ -69,9 +69,17 @@ public class StudentService {
             throw new IllegalArgumentException("Invalid data or duplicate email");
         }
     }
+   
 
     public void delete(Long id) {
         Student s = get(id);
         repo.delete(s);
     }
+      @Transactional
+    public void reset() {
+        repository.deleteAll();
+        // Reset H2 identity column for "students" table
+        jdbcTemplate.execute("ALTER TABLE students ALTER COLUMN id RESTART WITH 1");
+    }
 }
+
