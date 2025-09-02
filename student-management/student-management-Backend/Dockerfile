@@ -1,24 +1,29 @@
-# Use official Maven + JDK image to build
+# -----------------------
+# Build stage
+# -----------------------
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Copy only backend folder (where pom.xml exists)
-COPY EventPlanner\ application(spring+react)/EventPlanner-Backend/pom.xml .
-COPY EventPlanner\ application(spring+react)/EventPlanner-Backend/src ./src
+# Copy pom.xml and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Build the Spring Boot application (skip tests for faster CI/CD)
+# Copy source code
+COPY src ./src
+
+# Build the Spring Boot application (skip tests for faster build)
 RUN mvn clean package -DskipTests
 
-# --------------------------
+# -----------------------
 # Run stage
-# --------------------------
+# -----------------------
 FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
 
-# Copy jar from the build stage
+# Copy jar from build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Run the Spring Boot app
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
