@@ -1,27 +1,24 @@
-# ================================
-# STEP 1: Build the Spring Boot JAR
-# ================================
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+# Use official Maven + JDK image to build
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Copy source code into the container
-COPY . .
-
-# Package the application (skip tests for faster build)
-RUN mvn clean package -DskipTests
-
-# ================================
-# STEP 2: Run the Spring Boot app
-# ================================
-FROM eclipse-temurin:17-jdk
-
-# Set the working directory
 WORKDIR /app
 
-# Copy the JAR file from the build stage
-COPY --from=build target/*.jar app.jar
+# Copy only backend folder (where pom.xml exists)
+COPY EventPlanner\ application(spring+react)/EventPlanner-Backend/pom.xml .
+COPY EventPlanner\ application(spring+react)/EventPlanner-Backend/src ./src
 
-# Expose port 8080
-EXPOSE 8080
+# Build the Spring Boot application (skip tests for faster CI/CD)
+RUN mvn clean package -DskipTests
 
-# Run the JAR
+# --------------------------
+# Run stage
+# --------------------------
+FROM eclipse-temurin:17-jdk-alpine
+
+WORKDIR /app
+
+# Copy jar from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Run the Spring Boot app
 ENTRYPOINT ["java", "-jar", "app.jar"]
