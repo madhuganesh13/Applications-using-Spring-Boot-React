@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173", "https://applications-using-spring-boot-react-pvwf-9ej2fa6yf.vercel.app") // change to your frontend URLs
+                        .allowedOrigins("http://localhost:5173", "https://applications-using-spring-boot-reac.vercel.app") // change to your frontend URLs
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
@@ -22,5 +22,6 @@ public class CorsConfig {
         };
     }
 }
+
 
 
