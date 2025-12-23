@@ -11,7 +11,7 @@ import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.util.List;
-
+//hello
 @RestController
 @RequestMapping("/api/events")
 @CrossOrigin(origins = {"http://localhost:3000", "https://applications-using-spring-boot-reac-pink.vercel.app"}) // allow React dev server
@@ -74,6 +74,7 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 }
+
 
 
 
